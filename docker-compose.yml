@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  main_app:
+    build: .
+    ports:
+      - "8001:80"
+    depends_on:
+      - rabbitmq
+      - postgres_db
+    volumes:
+      - './api:/python/api:rw'
+      - './requirements.txt:/python/requirements.txt:rw'
+      - './alembic.ini:/python/alembic.ini:rw'
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres_db:5432/$POSTGRES_DB
+    command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    ports:
+      - "15673:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_VHOST: vhost
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A api.celery_tasks.tasks worker --loglevel=info
+    env_file: .env
+    depends_on:
+      - rabbitmq
+      - main_app
+      - postgres_db
+    stdin_open: true
+    volumes:
+      - './api:/app/api:rw'
+      - './celery_tasks:/app/celery_tasks:rw'
+
+  postgres_db:
+    image: postgres:14.1-alpine
+    restart: always
+    env_file: .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+volumes:
+  postgres_db:
+    driver: local
