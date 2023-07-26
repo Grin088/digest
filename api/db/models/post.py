@@ -4,6 +4,8 @@ from api.db.base_class import Base
 
 
 class PostCategory(Base):
+    """PostCategory model"""
+
     __tablename__ = "post_categories"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -27,6 +29,8 @@ class PostCategory(Base):
 
 
 class Post(Base):
+    """Post model"""
+
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)

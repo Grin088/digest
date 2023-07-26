@@ -7,7 +7,7 @@ from api.logger.logger_main import logger
 app = FastAPI()
 
 
-# app.include_router(users.router)
+app.include_router(users.router)
 app.include_router(subscriptions.router)
 app.include_router(posts.router)
 app.include_router(digests.router)
@@ -32,4 +32,4 @@ async def server_errors(request: Request, exc: Exception):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="localhost", port=8000, reload=True)
+    uvicorn.run(app, host="localhost", port=8000)

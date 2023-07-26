@@ -1,6 +1,6 @@
 import os
 
-path_to_log_file = os.path.abspath("logger/logs/meet_code.log")
+path_to_log_file = os.path.abspath("logger/logs/digest.log")
 os.makedirs(os.path.dirname(path_to_log_file), exist_ok=True)
 
 logger_config = {
@@ -32,7 +32,6 @@ logger_config = {
             "encoding": "utf-8",
             "utc": False,
         },
-
     },
     "loggers": {
         "logger": {

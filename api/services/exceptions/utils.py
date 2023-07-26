@@ -4,11 +4,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 def check_object(
-    obj: declarative_base, session: SessionLocal, obj_exist=None, obj_not_exist=None, **kwargs
+    obj: declarative_base,
+    session: SessionLocal,
+    obj_exist=None,
+    obj_not_exist=None,
+    **kwargs,
 ) -> declarative_base:
     session = session
     obj_instance = session.query(obj).filter_by(**kwargs).first()
-
+    """Method to check object exist or not exist """
     if not obj_instance and obj_exist:
         raise DataBaseObjectException(
             status_code=404,

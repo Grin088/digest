@@ -5,6 +5,8 @@ from api.db.base_class import Base
 
 
 class Digest(Base):
+    """Digest model"""
+
     __tablename__ = "digests"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)

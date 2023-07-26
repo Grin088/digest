@@ -5,6 +5,8 @@ from api.db.base_class import Base
 
 
 class Subscription(Base):
+    """Subscription model"""
+
     __tablename__ = "subscriptions"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)

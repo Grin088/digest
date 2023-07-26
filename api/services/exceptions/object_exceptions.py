@@ -1,4 +1,6 @@
 class DataBaseObjectException(Exception):
+    """Custom exception when fetch object from database or create row in database"""
+
     def __init__(self, status_code: int, content=None, headers=None) -> None:
         self.status_code = status_code
         self.content = content

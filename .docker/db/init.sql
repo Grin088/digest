@@ -14,7 +14,7 @@ INSERT INTO "post_categories" (name, parent_id)
 SELECT 'skis', parent_id
 FROM (SELECT id as parent_id FROM post_categories WHERE name = 'Sport') subquery
 UNION
-SELECT 'swiming', parent_id
+SELECT 'swimming', parent_id
 FROM (SELECT id as parent_id FROM post_categories WHERE name = 'Sport') subquery
 UNION
 SELECT 'machines', parent_id
@@ -29,24 +29,6 @@ UNION
 SELECT 'stocks', parent_id
 FROM (SELECT id as parent_id FROM post_categories WHERE name = 'Finance') subquery
 ON CONFLICT DO NOTHING;
-
-INSERT INTO "subscriptions" (user_id)
-SELECT u.id
-FROM users u
-WHERE u.username IN ('john', 'jane', 'alex')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO "subscription_category_association_table" (post_category_id, subscription_id)
-SELECT pc.id, s.id
-FROM "post_categories" pc
-CROSS JOIN "subscriptions" s
-JOIN "users" u ON s.user_id = u.id
-WHERE (pc.name IN ('Sport', 'Technologies') AND u.username = 'john')
-   OR (pc.name IN ('Sport', 'Finance') AND u.username = 'jane')
-   OR (pc.name IN ('Sport', 'Finance', 'Technologies') AND u.username = 'alex')
-ON CONFLICT DO NOTHING;
-
-
 
 INSERT INTO "posts" (post_category_id, name, text, rating, views)
 SELECT c.id, 'Sample Post', 'Some post about skis competitions.', 5, 100
